@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Moto Dash — Balap Motor ke Finish</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-shell">
+        <header class="top-bar">
+            <div class="brand">
+                <span class="brand-badge">MOTO</span>
+                <h1>MOTO DASH</h1>
+            </div>
+            <div class="hud-stats">
+                <div class="stat-pill" title="Nyawa Motor">
+                    <span class="stat-label">NYAWA</span>
+                    <span id="heartsDisplay" class="hearts">❤️❤️❤️</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">SKOR</span>
+                    <span id="scoreDisplay" class="stat-value">0</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">KECEPATAN</span>
+                    <span id="speedDisplay" class="stat-value">0 km/j</span>
+                </div>
+                <div class="stat-pill nitro-pill">
+                    <span class="stat-label">NITRO</span>
+                    <div class="nitro-bar-track">
+                        <div id="nitroBar" class="nitro-bar-fill"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="top-actions">
+                <button id="soundBtn" class="icon-btn" title="Suara Nyala/Mati" aria-label="Toggle Suara">🔊</button>
+                <button id="pauseBtn" class="icon-btn" title="Jeda (P)" aria-label="Pause Game">⏸️</button>
+            </div>
+        </header>
+
+        <div class="progress-wrapper">
+            <span class="progress-tag" id="stageTag">Level 1: Jalan Kota Pagi</span>
+            <div class="progress-track">
+                <div id="progressFill" class="progress-fill"></div>
+                <div id="progressBikeIcon" class="progress-bike">🏍️</div>
+            </div>
+            <span class="progress-distance" id="distanceDisplay">0 / 750 m</span>
+        </div>
+
+        <main class="canvas-stage">
+            <canvas id="gameCanvas" width="960" height="500"></canvas>
+
+            <!-- Start / Menu Overlay -->
+            <div id="startOverlay" class="overlay active">
+                <div class="modal-card">
+                    <div class="modal-eyebrow">ARCADE MOTORBIKE · 10 LEVEL</div>
+                    <h2>Tancap Gas ke Garis Finish!</h2>
+                    <p class="modal-desc">
+                        Lolos setiap level untuk membuka tantangan berikutnya hingga Level 10!
+                    </p>
+
+                    <div class="level-grid" id="levelGrid"></div>
+
+                    <div class="selected-level-bar">
+                        <span id="selectedLevelInfo">Level 1: Jalan Kota Pagi (750 m · Pemula)</span>
+                        <span class="best-record" id="bestRecordText">Rekor: —</span>
+                    </div>
+
+                    <div class="controls-guide">
+                        <div><kbd>→</kbd> / <kbd>D</kbd> Gas</div>
+                        <div><kbd>←</kbd> / <kbd>A</kbd> Rem</div>
+                        <div><kbd>Spasi</kbd> / <kbd>↑</kbd> Lompat</div>
+                        <div><kbd>Shift</kbd> / <kbd>N</kbd> Nitro</div>
+                    </div>
+
+                    <button id="startBtn" class="primary-btn">MULAI LEVEL 1</button>
+                </div>
+            </div>
+
+            <!-- Pause Overlay -->
+            <div id="pauseOverlay" class="overlay">
+                <div class="modal-card compact">
+                    <h2>Permainan Dijeda</h2>
+                    <p class="modal-desc">Ambil napas dulu sebelum melanjutkan perjalanan ke garis finish.</p>
+                    <div class="modal-buttons">
+                        <button id="resumeBtn" class="primary-btn">Lanjutkan</button>
+                        <button id="restartPauseBtn" class="secondary-btn">Ulang Level</button>
+                        <button id="menuPauseBtn" class="secondary-btn">Pilih Level</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Over Overlay -->
+            <div id="gameOverOverlay" class="overlay">
+                <div class="modal-card compact">
+                    <div class="modal-eyebrow danger">MOTOR MOGOK!</div>
+                    <h2>Gagal Mencapai Finish</h2>
+                    <p id="gameOverStats" class="modal-desc"></p>
+                    <div class="modal-buttons">
+                        <button id="retryBtn" class="primary-btn">Coba Lagi</button>
+                        <button id="menuOverBtn" class="secondary-btn">Pilih Level</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Win Overlay -->
+            <div id="winOverlay" class="overlay">
+                <div class="modal-card compact">
+                    <div class="modal-eyebrow success">FINISH TERCAPAI! 🏁</div>
+                    <h2 id="winTitle">Selamat, Level Selesai!</h2>
+                    <p id="winStats" class="modal-desc"></p>
+                    <div class="modal-buttons">
+                        <button id="nextStageBtn" class="primary-btn">Lanjut Level Berikutnya</button>
+                        <button id="replayWinBtn" class="secondary-btn">Main Ulang</button>
+                        <button id="menuWinBtn" class="secondary-btn">Pilih Level</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Touch / On-screen Controls -->
+        <footer class="touch-controls">
+            <div class="touch-group">
+                <button id="btnBrake" class="ctrl-btn brake-btn" type="button">◀ REM</button>
+                <button id="btnGas" class="ctrl-btn gas-btn" type="button">GAS ▶</button>
+            </div>
+            <div class="touch-group">
+                <button id="btnNitro" class="ctrl-btn nitro-btn" type="button">🔥 NITRO</button>
+                <button id="btnJump" class="ctrl-btn jump-btn" type="button">⬆ LOMPAT</button>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
